@@ -4,9 +4,13 @@ package bno055
 import (
 	"encoding/binary"
 	"errors"
+	"os"
+	"os/signal"
 	"sync"
+	"syscall"
 	"time"
 
+	"github.com/kpeu3i/bno055"
 	"github.com/willwhiteneck/bno055/i2c"
 )
 
@@ -665,7 +669,35 @@ func (s *Sensor) init() error {
 		return err
 	}
 
-	err = s.Calibrate(defaultCalibrationOffsets)
+	var (
+		isCalibrated       bool
+		calibrationOffsets bno055.CalibrationOffsets
+		calibrationStatus  *bno055.CalibrationStatus
+	)
+
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+
+	for !isCalibrated {
+		select {
+		case <-signals:
+			err := s.Close()
+			if err != nil {
+				panic(err)
+			}
+		default:
+			calibrationOffsets, calibrationStatus, err = s.Calibration()
+			if err != nil {
+				panic(err)
+			}
+
+			isCalibrated = calibrationStatus.IsCalibrated()
+		}
+
+		time.Sleep(100 * time.Millisecond)
+	}
+
+	err = s.Calibrate(calibrationOffsets)
 	if err != nil {
 		return err
 	}
