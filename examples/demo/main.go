@@ -27,6 +27,9 @@ func main() {
 		calibrationStatus  *bno055.CalibrationStatus
 	)
 
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+
 	for !isCalibrated {
 		select {
 		case <-signals:
