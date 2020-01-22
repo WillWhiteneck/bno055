@@ -655,7 +655,7 @@ func (s *Sensor) init() error {
 	}
 
 	// Set the unit selection bits
-	err = s.bus.Write(bno055UnitSel, 0x16)
+	err = s.bus.Write(bno055UnitSel, 0x00)
 	if err != nil {
 		return err
 	}
