@@ -100,9 +100,6 @@ func main() {
 
 	fmt.Printf("*** Temperature: t=%v\n", temperature)
 
-	signals := make(chan os.Signal, 1)
-	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
-
 	for {
 		select {
 		case <-signals:
