@@ -59,6 +59,11 @@ func main() {
 
 	fmt.Printf("*** Done! Calibration offsets: %v\n", calibrationOffsets)
 
+	err = sensor.Calibrate(calibrationOffsets)
+	if err != nil {
+		return err
+	}
+
 	status, err := sensor.Status()
 	if err != nil {
 		panic(err)
