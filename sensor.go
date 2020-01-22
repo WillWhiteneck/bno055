@@ -642,13 +642,8 @@ func (s *Sensor) init() error {
 		return err
 	}
 
-	err = s.bus.Write(bno055PageID, 0x0)
-	if err != nil {
-		return err
-	}
-
-	// Set the unit selection bits
-	err = s.bus.Write(bno055UnitSel, 0x16)
+	// Default to internal oscillator
+	err = s.bus.Write(bno055SysTrigger, 0x00)
 	if err != nil {
 		return err
 	}
@@ -659,13 +654,18 @@ func (s *Sensor) init() error {
 		return err
 	}
 
-	// Default to internal oscillator
-	err = s.bus.Write(bno055SysTrigger, 0x00)
+	// Set the unit selection bits
+	err = s.bus.Write(bno055UnitSel, 0x0)
 	if err != nil {
 		return err
 	}
 
 	err = s.setOperationMode(bno055OperationModeNdof)
+	if err != nil {
+		return err
+	}
+
+	err = s.Calibrate(defaultCalibrationOffsets)
 	if err != nil {
 		return err
 	}
