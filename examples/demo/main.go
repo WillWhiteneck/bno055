@@ -61,7 +61,7 @@ func main() {
 
 	err = sensor.Calibrate(calibrationOffsets)
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	status, err := sensor.Status()
