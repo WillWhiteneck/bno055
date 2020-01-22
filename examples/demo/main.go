@@ -80,20 +80,20 @@ func main() {
 		revision.Magnetometer,
 	)
 
-	axisConfig, err := sensor.AxisConfig()
-	if err != nil {
-		panic(err)
-	}
+	// axisConfig, err := sensor.AxisConfig()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	fmt.Printf(
-		"*** Axis: x=%v, y=%v, z=%v, sign_x=%v, sign_y=%v, sign_z=%v\n",
-		axisConfig.X,
-		axisConfig.Y,
-		axisConfig.Z,
-		axisConfig.SignX,
-		axisConfig.SignY,
-		axisConfig.SignZ,
-	)
+	// fmt.Printf(
+	// 	"*** Axis: x=%v, y=%v, z=%v, sign_x=%v, sign_y=%v, sign_z=%v\n",
+	// 	axisConfig.X,
+	// 	axisConfig.Y,
+	// 	axisConfig.Z,
+	// 	axisConfig.SignX,
+	// 	axisConfig.SignY,
+	// 	axisConfig.SignZ,
+	// )
 
 	temperature, err := sensor.Temperature()
 	if err != nil {
