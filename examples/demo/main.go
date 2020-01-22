@@ -21,6 +21,39 @@ func main() {
 		panic(err)
 	}
 
+	var (
+		isCalibrated       bool
+		calibrationOffsets bno055.CalibrationOffsets
+		calibrationStatus  *bno055.CalibrationStatus
+	)
+
+	for !isCalibrated {
+		select {
+		case <-signals:
+			err := sensor.Close()
+			if err != nil {
+				panic(err)
+			}
+		default:
+			calibrationOffsets, calibrationStatus, err = sensor.Calibration()
+			if err != nil {
+				panic(err)
+			}
+
+			isCalibrated = calibrationStatus.IsCalibrated()
+
+			fmt.Printf(
+				"\r*** Calibration status (0..3): system=%v, accelerometer=%v, gyroscope=%v, magnetometer=%v",
+				calibrationStatus.System,
+				calibrationStatus.Accelerometer,
+				calibrationStatus.Gyroscope,
+				calibrationStatus.Magnetometer,
+			)
+		}
+
+		time.Sleep(100 * time.Millisecond)
+	}
+
 	status, err := sensor.Status()
 	if err != nil {
 		panic(err)
