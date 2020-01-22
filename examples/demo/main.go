@@ -57,6 +57,8 @@ func main() {
 		time.Sleep(100 * time.Millisecond)
 	}
 
+	fmt.Printf("*** Done! Calibration offsets: %v\n", calibrationOffsets)
+
 	status, err := sensor.Status()
 	if err != nil {
 		panic(err)
