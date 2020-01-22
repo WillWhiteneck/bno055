@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kpeu3i/bno055/i2c"
+	"github.com/willwhiteneckbno055/i2c"
 )
 
 type Status struct {
